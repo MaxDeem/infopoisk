@@ -13,5 +13,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.18" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.13.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene.morphology:russian:1.1" level="project" />
   </component>
 </module>

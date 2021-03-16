@@ -31,5 +31,18 @@
             <artifactId>jsoup</artifactId>
             <version>1.13.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene.morphology/russian -->
+        <dependency>
+            <groupId>org.apache.lucene.morphology</groupId>
+            <artifactId>russian</artifactId>
+            <version>1.1</version>
+        </dependency>
+
     </dependencies>
+    <repositories>
+        <repository>
+            <id>org.apache.lucene.morphology</id>
+            <url>https://dl.bintray.com/cuba-platform/main/</url>
+        </repository>
+    </repositories>
 </project>

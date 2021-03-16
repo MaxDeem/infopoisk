@@ -1,10 +1,13 @@
 import lombok.SneakyThrows;
+import org.apache.lucene.morphology.russian.RussianAnalyzer;
 import org.jsoup.Jsoup;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Application {
@@ -29,6 +32,10 @@ public class Application {
             }
             line = reader.readLine();
         }
+
+        Map<String, String> lemmas = new HashMap<>();
+        
+
     }
 
     public static String removeHtml(String html) {
@@ -73,4 +80,5 @@ public class Application {
 
         return token;
     }
+
 }
