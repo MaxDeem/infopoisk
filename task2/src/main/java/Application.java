@@ -1,33 +1,19 @@
 import lombok.SneakyThrows;
+import org.jsoup.Jsoup;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.StringTokenizer;
 
 public class Application {
-    public static String outputToken = "E:\\studies\\infopoisk\\infopoisk\\task2\\src\\main\\resources\\tokens.txt";
-
-    public static boolean hasRussian(String token) {
-        for (int i = 0; i < token.length(); i++) {
-            if(Character.UnicodeBlock.of(token.charAt(i)).equals(Character.UnicodeBlock.CYRILLIC)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    //TODO add spacings in between words
-    public static String getRussianChars(String token) {
-        String newToken = "";
-        for (int i = 0; i < token.length(); i++) {
-            if(Character.UnicodeBlock.of(token.charAt(i)).equals(Character.UnicodeBlock.GENERAL_PUNCTUATION)) {
-                newToken = newToken.concat(" ");
-            } else if (Character.UnicodeBlock.of(token.charAt(i)).equals(Character.UnicodeBlock.CYRILLIC)) {
-                newToken += token.charAt(i);
-            }
-        }
-        return newToken;
-    }
+    public static String inputFile = "E:\\studies\\infopoisk\\infopoisk\\task2\\src\\main\\resources\\Прозоров, Лев Рудольфович — Википедия.html";
+    public static String outputFile = "E:\\studies\\infopoisk\\infopoisk\\task2\\src\\main\\resources\\tokens.txt";
     @SneakyThrows
-    public static void getAllTokens(BufferedReader reader, BufferedWriter writer) {
+    public static void main(String[] args) {
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
         String token;
         String line = reader.readLine();
         while (line != null) {
@@ -35,28 +21,56 @@ public class Application {
             while (tokenizer.hasMoreTokens()) {
                 token = tokenizer.nextToken();
                 if (hasRussian(token)) {
-                    token = getRussianChars(token);
-                    addToken(writer, token);
+                    token = removeHtml(token);
+                    if (!token.isEmpty()) {
+                        ifSeveral(writer, token);
+                    }
                 }
             }
             line = reader.readLine();
         }
-        reader.close();
     }
 
+    public static String removeHtml(String html) {
+        return Jsoup.parse(html).text();
+    }
     @SneakyThrows
     public static void addToken(BufferedWriter writer, String token) {
         writer.write(token);
         writer.newLine();
         writer.flush();
     }
+    public static boolean hasRussian(String token) {
+        for (int i = 0; i < token.length(); i++) {
+            if (Character.UnicodeBlock.of(token.charAt(i)).equals(Character.UnicodeBlock.CYRILLIC)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean hasEnglish(String token) {
+        for (int i = 0; i < token.length(); i++) {
+            if (Character.UnicodeBlock.of(token.charAt(i)).equals(Character.UnicodeBlock.BASIC_LATIN)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void ifSeveral(BufferedWriter writer, String token) {
+        String[] tokens = token.split(",");
+        for (String s : tokens) {
+            //if contains english chars we can remove it, because most probably it's metadata
+            if (!hasEnglish(s)) {
+                //on this stage only "«" and "»" are left, so we remove them
+                s = replaceLeftovers(s);
+                addToken(writer, s);
+            }
+        }
+    }
+    public static String replaceLeftovers(String token) {
+        token = token.replace("«", "");
+        token = token.replace("»", "");
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        String file = "E:\\studies\\infopoisk\\infopoisk\\task2\\src\\main\\resources\\Прозоров, Лев Рудольфович — Википедия.html";
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outputToken));
-
-        getAllTokens(reader, writer);
+        return token;
     }
 }

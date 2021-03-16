@@ -6,6 +6,6 @@ How to install JRE: https://docs.oracle.com/goldengate/1212/gg-winux/GDRAD/java.
 
 To run application: 
 1. Open command prompt
-2. Get to the Application.java folder
-3. Compile Application.java
-4. Run Application.class
+2. Get to the LegacyApplication.java folder
+3. Compile LegacyApplication.java
+4. Run LegacyApplication.class
