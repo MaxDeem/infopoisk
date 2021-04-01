@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Application {
-    public static String input = "src/main/resources/GMA The Heart of Asia - Wikipedia.html";
+    public static String input = "src/main/resources/British Muslim Heritage Centre - Wikipedia.html";
     public static String tokenFile = "src/main/resources/tokens.txt";
 
     @SneakyThrows
